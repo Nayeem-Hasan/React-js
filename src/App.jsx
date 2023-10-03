@@ -1,4 +1,4 @@
-import {useState } from "react"
+import {useRef, useState } from "react"
 
 
 const App = () => {
@@ -17,8 +17,31 @@ const App = () => {
     console.log(FormObj)
 
   }
+  const [list,setList]=useState([]);  
+  const [item,setItem]=useState("");
+  
+  const addToList = ()=> {
+    list.push(item);
+    setList([...list]);
+  }
+  const RemoveItem = (index)=>{
+    list.splice(index,1);
+    setList([...list]);
+  }
+ 
+  let myHeadline=useRef();
 
+  const change = () => {
+   myHeadline.current.classList.remove('text-success')
+   myHeadline.current.classList.add('text-danger')
+   myHeadline.current.classList.remove('bg-primary-subtle')
+   myHeadline.current.classList.add('bg-success-subtle')
+   myHeadline.current.classList.remove('p-4')
+   myHeadline.current.classList.add('p-5')
+  }
+  
   return(
+    <>
     <div className="container">
       
       <form onSubmit={Formsubmit}>
@@ -36,183 +59,45 @@ const App = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
+      <br />
+    <br />
+    <br />
+    <br />
+    <div>
+      <table>
+        <tbody>
+          {
+            list.length!==0?(
+              list.map((element,index)=>{
+                return(
+                  <tr>
+                    <td>{element}</td>
+                    <td><button onClick={()=>{RemoveItem(index)}}>Remove</button></td>
+                  </tr>
+                )
+              })
+            ):(<tr></tr>)
+          }
+        </tbody>
+      </table>
+
+      
+      <input onChange={(e)=>setItem(e.target.value)} placeholder="Item"/>
+      <button onClick={addToList}>Add</button>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div>
+       <h1 className="text-success p-4 bg-primary-subtle" ref={myHeadline}>This is Headline</h1>
+       <button onClick={()=>change()}>Click to Change me</button>
+     </div>
 
     </div>
+    
+   
+   </>
   );
-// const [list,setList]=useState([]);  
-// const [item,setItem]=useState("");
-
-// const addToList = ()=> {
-//   list.push(item);
-//   setList([...list]);
-// }
-// const RemoveItem = (index)=>{
-//   list.splice(index,1);
-//   setList([...list]);
-// }
-
-
-// return (
-//   <div>
-//     <table>
-//       <tbody>
-//         {
-//           list.length!==0?(
-//             list.map((element,index)=>{
-//               return(
-//                 <tr>
-//                   <td>{element}</td>
-//                   <td><button onClick={()=>{RemoveItem(index)}}>Remove</button></td>
-//                 </tr>
-//               )
-//             })
-//           ):(<tr></tr>)
-//         }
-//       </tbody>
-//     </table>
-
-    
-//     <input onChange={(e)=>setItem(e.target.value)} placeholder="Item"/>
-//     <button onClick={addToList}>Add</button>
-//   </div>
-// );
-
-// const [list,setList]=useState([])
-// const [item,setItem]=useState("");
-
-// const AddToList=()=>{
-//   list.push(item)
-//   setList([...list]);
-// }
-
-// const RemoveItem = (index) => {
-//   list.splice(index,1);
-//   setList([...list]);
-// }
-
-//  return(
-//   <div>
-//     <table>
-//       <tbody>
-//         {
-//           list.length!==0?(
-//             list.map((element,index)=>{
-//               return(
-
-//                 <tr>
-//                   <td>{element}</td>
-//                   <td><button onClick={()=>{
-//                   RemoveItem(index)
-//                 }}>Remove</button></td>
-//                 </tr>
-//               )
-//             })
-//           ):(<tr></tr>)
-//         }
-//       </tbody>
-//     </table>
-
-//     <input onChange={(e)=>setItem(e.target.value)} placeholder="Item" />
-//     <button onClick={AddToList}>Add</button>
-//   </div>
-//  );
-// let myHeadline=useRef();
-
-//   const change = () => {
-//    myHeadline.current.classList.remove('text-success')
-//    myHeadline.current.classList.add('text-danger')
-//    myHeadline.current.classList.remove('bg-primary-subtle')
-//    myHeadline.current.classList.add('bg-success-subtle')
-//    myHeadline.current.classList.remove('p-4')
-//    myHeadline.current.classList.add('p-5')
-//   }
-//   return (
-    
-//     <div>
-//       <h1 className="text-success p-4 bg-primary-subtle" ref={myHeadline}>This is Headline</h1>
-//       <button onClick={()=>change()}>Click to Change me</button>
-//     </div>
-     
-//   )
-
-// let number=useRef(0);
-
-// const change = () => {
-//   number.current++;
-//   console.log('Clicked ${number.current} times'+"got");
-// }
-// return (
-//   <div>
-//     <h1></h1>
-//     <button onClick={change}>Click</button>
-//   </div>
-// );
-// let APIData=useRef(null);
-// let PTag=useRef();
-
-// const fetchData = async () => {
-//   const response= await fetch("https://dummyjson.com/products") 
-//   APIData.current=await response.json();
-// }
-// const showData = () => {
-//   PTag.current.innerText=JSON.stringify(APIData.current)
-// }
-// return (
-//   <div>
-//     <p ref={PTag}></p>
-//     <button onClick={fetchData}>Call Api</button>
-//     <button onClick={showData}>Show Data</button>
-//   </div>
-// );
-
-// let exResultRef = useRef(null);
-// let myDiv = useRef(null);
-
-// const fetchData = async() => {
-//  const response = await fetch('https://dummyjson.com/products');
-//   exResultRef.current = await response.json();
-// }
-// const ShowData = () => {
-//  myDiv.current.innerHTML = JSON.stringify(exResultRef.current)
-// }
-
-// return (
-//  <div>
-//   <div ref={myDiv}></div>
-//   <button onClick={fetchData}>Call Api</button>
-//   <button onClick={ShowData}>Show Api</button>
-  
-//  </div>
-// );
-  // const [myObj,setMyObj]=useState({
-  //   key1:"Key Value 1",
-  //   key2:"Key Value 2",
-  //   key3:"Key Value 3",
-  //   key4:"Key Value 4",
-  // });
-
-  // const change = () => {
-  //   setMyObj(
-
-  //     prevOBJ=>({
-  //       ...prevOBJ,
-  //       key1:"New value for me 1",
-  //       key2:"New value for me 2",
-  //       key4:"New value for me 4",
-  //     })
-
-  //   )
-  // }
-  // return (
-  //   <div>
-  //     <h1>{myObj.key1}</h1>
-  //     <h1>{myObj.key2}</h1>
-  //     <h1>{myObj.key4}</h1>
-  //     <button onClick={change}>Click</button>
-  //   </div>
-  // );
-
-
 
 }
 
